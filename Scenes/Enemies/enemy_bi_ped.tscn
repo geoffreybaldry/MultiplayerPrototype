@@ -1,0 +1,143 @@
+[gd_scene load_steps=19 format=3 uid="uid://c8sydgqm2ae4h"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/enemy_bi_ped.gd" id="1_jlir7"]
+[ext_resource type="PackedScene" uid="uid://dvnecoowv8i4k" path="res://Scenes/WorldUI/HealthBar/health_bar_3d.tscn" id="3_4ftuv"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector_reactive.gd" id="3_vnc7h"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="4_o8h7h"]
+[ext_resource type="PackedScene" uid="uid://cvwtud0adepjn" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsDying.tscn" id="5_7sd1n"]
+[ext_resource type="PackedScene" uid="uid://bhn7yeoyyvrw1" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerInAttackRange.tscn" id="5_qwbr7"]
+[ext_resource type="PackedScene" uid="uid://bqq42uum8qkkn" path="res://Scripts/BehaviourTrees/Enemy/Actions/AttackPlayer.tscn" id="6_c7hqq"]
+[ext_resource type="PackedScene" uid="uid://ufaae75g546f" path="res://Scripts/BehaviourTrees/Enemy/Actions/Die.tscn" id="6_hjf8t"]
+[ext_resource type="PackedScene" uid="uid://bi3pvtgb36f7g" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerInChaseRange.tscn" id="7_42o1a"]
+[ext_resource type="PackedScene" uid="uid://cqghnj5bssbyo" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerVisible.tscn" id="8_qhx6k"]
+[ext_resource type="PackedScene" uid="uid://btcs07havo6on" path="res://Scripts/BehaviourTrees/Enemy/Actions/ChasePlayer.tscn" id="9_xd6ly"]
+[ext_resource type="PackedScene" uid="uid://dtyhh5bvuqm3l" path="res://Scripts/BehaviourTrees/Enemy/Conditions/HasLastKnownPosition.tscn" id="10_21d0g"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="11_hcs7v"]
+[ext_resource type="PackedScene" uid="uid://d3gem2l04hknu" path="res://Scripts/BehaviourTrees/Enemy/Actions/GoToLastKnownPosition.tscn" id="11_ps32x"]
+[ext_resource type="PackedScene" uid="uid://w72ssoqvef61" path="res://Scripts/BehaviourTrees/Enemy/Actions/Idle.tscn" id="12_dopdx"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="12_w32ay"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l2oc"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tmdwt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = false
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:state")
+properties/1/spawn = false
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath("Visual:transform")
+properties/2/spawn = false
+properties/2/sync = true
+properties/2/watch = false
+
+[node name="Enemy_BiPed" type="CharacterBody3D" groups=["Enemy"]]
+collision_layer = 32
+collision_mask = 39
+script = ExtResource("1_jlir7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2l2oc")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_tmdwt")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="StateLabel" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.66332, 0)
+billboard = 1
+text = "State"
+
+[node name="ClosestPlayerInSightLabel" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40429, 0)
+billboard = 1
+text = "Closest Player"
+
+[node name="Hitbox" type="Area3D" parent="Visual" groups=["Enemy"]]
+collision_layer = 128
+collision_mask = 256
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visual/Hitbox"]
+
+[node name="HealthBar3D" parent="Visual" instance=ExtResource("3_4ftuv")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.08704, 0)
+
+[node name="SoundEffects" type="Node" parent="."]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="BehaviourTrees" type="Node" parent="."]
+
+[node name="BeehaveTree" type="Node" parent="BehaviourTrees" node_paths=PackedStringArray("blackboard")]
+script = ExtResource("11_hcs7v")
+blackboard = NodePath("@Node@39554")
+
+[node name="Either" type="Node" parent="BehaviourTrees/BeehaveTree"]
+script = ExtResource("3_vnc7h")
+
+[node name="Die" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("12_w32ay")
+
+[node name="IsDying" parent="BehaviourTrees/BeehaveTree/Either/Die" instance=ExtResource("5_7sd1n")]
+
+[node name="Die" parent="BehaviourTrees/BeehaveTree/Either/Die" instance=ExtResource("6_hjf8t")]
+
+[node name="Attack" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("4_o8h7h")
+
+[node name="IsPlayerInAttackRange" parent="BehaviourTrees/BeehaveTree/Either/Attack" instance=ExtResource("5_qwbr7")]
+
+[node name="AttackPlayer" parent="BehaviourTrees/BeehaveTree/Either/Attack" instance=ExtResource("6_c7hqq")]
+
+[node name="Chase" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("4_o8h7h")
+
+[node name="IsPlayerInChaseRange" parent="BehaviourTrees/BeehaveTree/Either/Chase" instance=ExtResource("7_42o1a")]
+
+[node name="IsPlayerVisible" parent="BehaviourTrees/BeehaveTree/Either/Chase" instance=ExtResource("8_qhx6k")]
+
+[node name="ChasePlayer" parent="BehaviourTrees/BeehaveTree/Either/Chase" instance=ExtResource("9_xd6ly")]
+
+[node name="GoToLastKnownPosition" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("4_o8h7h")
+
+[node name="HasLastKnownPosition" parent="BehaviourTrees/BeehaveTree/Either/GoToLastKnownPosition" instance=ExtResource("10_21d0g")]
+
+[node name="GoToLastKnownPosition" parent="BehaviourTrees/BeehaveTree/Either/GoToLastKnownPosition" instance=ExtResource("11_ps32x")]
+
+[node name="Idle" parent="BehaviourTrees/BeehaveTree/Either" instance=ExtResource("12_dopdx")]
+
+[node name="Detector" type="Node3D" parent="."]
+
+[node name="PlayerDetector" type="Area3D" parent="Detector"]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/PlayerDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0, 3)
+collision_mask = 5
+
+[node name="Marker3D" type="Marker3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = 0.5
+avoidance_enabled = true
+radius = 2.0
+debug_enabled = true
+debug_use_custom = true
+
+[node name="Hurtbox" type="Area3D" parent="." groups=["Enemy"]]
+collision_layer = 64
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3gem2l04hknu"]
+
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/GoToLastKnownPosition.gd" id="1_ki770"]
+
+[node name="GoToLastKnownPosition" type="Node"]
+script = ExtResource("1_ki770")

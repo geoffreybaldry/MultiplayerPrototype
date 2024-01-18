@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv1jvx2jjdgjr"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_lg1hr"]
+[ext_resource type="PackedScene" uid="uid://slypn3bpiycq" path="res://Menus/main_menu.tscn" id="2_7grlh"]
+[ext_resource type="PackedScene" uid="uid://cad1bobvd1j1e" path="res://Menus/lobby_menu.tscn" id="3_ohy84"]
+
+[node name="World" type="Node"]
+script = ExtResource("1_lg1hr")
+
+[node name="MainMenu" parent="." instance=ExtResource("2_7grlh")]
+visible = false
+
+[node name="LobbyMenu" parent="." instance=ExtResource("3_ohy84")]

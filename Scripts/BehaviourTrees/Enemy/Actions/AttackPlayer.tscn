@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqq42uum8qkkn"]
+
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/AttackPlayer.gd" id="1_1mi7p"]
+
+[node name="AttackPlayer" type="Node"]
+script = ExtResource("1_1mi7p")

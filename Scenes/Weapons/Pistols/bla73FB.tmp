@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgk8uv1d0hcu8"]
+
+[ext_resource type="PackedScene" uid="uid://coyjgriusyjqb" path="res://Assets/Models/Weapons/blasterA.fbx" id="1_58lr7"]
+[ext_resource type="PackedScene" uid="uid://dnwe7i8mf185u" path="res://Scenes/Weapons/Pistols/pistol.tscn" id="1_yu03m"]
+[ext_resource type="Script" path="res://Scenes/Weapons/Pistols/blaster_a.gd" id="2_rt3cx"]
+[ext_resource type="PackedScene" uid="uid://dpuqcc65ssv4b" path="res://Scenes/Weapons/Projectiles/Bullets/foam_bullet.tscn" id="3_6m11l"]
+
+[node name="BlasterA" instance=ExtResource("1_yu03m")]
+script = ExtResource("2_rt3cx")
+projectile_scene = ExtResource("3_6m11l")
+projectile_speed = 10.0
+
+[node name="Model" parent="." index="0"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="blasterA" parent="Model" index="0" instance=ExtResource("1_58lr7")]
+
+[node name="Muzzle_Positon" parent="Model" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.21811e-08, 0.111148, -0.482496)
+
+[node name="CooldownTimer" parent="." index="1"]
+wait_time = 0.3

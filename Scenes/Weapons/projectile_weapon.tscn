@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bavd5g1jk5c8u"]
+
+[ext_resource type="Script" path="res://Scenes/Weapons/projectile_weapon.gd" id="1_n5ixl"]
+
+[node name="Projectile_Weapon" type="Node3D"]
+script = ExtResource("1_n5ixl")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Muzzle_Positon" type="Marker3D" parent="Model"]
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SoundEffects" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="SoundEffects"]

@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://uo6oe6uihchd"]
+
+[ext_resource type="Script" path="res://Scenes/Weapons/Projectiles/projectile.gd" id="1_t63vk"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nnu2q"]
+properties/0/path = NodePath(".:global_transform")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="Projectile" type="CharacterBody3D"]
+collision_layer = 8
+collision_mask = 69
+script = ExtResource("1_t63vk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="TimeToLive" type="Timer" parent="Timers"]
+wait_time = 2.0
+one_shot = true
+
+[node name="EffectWaitTimer" type="Timer" parent="Timers"]
+wait_time = 5.0
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_nnu2q")
+
+[node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 1024
+collision_mask = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

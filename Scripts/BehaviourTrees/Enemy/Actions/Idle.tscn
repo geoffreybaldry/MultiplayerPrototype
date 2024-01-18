@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://w72ssoqvef61"]
+
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/Idle.gd" id="1_jmfie"]
+
+[node name="Idle" type="Node"]
+script = ExtResource("1_jmfie")

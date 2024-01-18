@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://btcs07havo6on"]
+
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/ChasePlayer.gd" id="1_mpvmp"]
+
+[node name="ChasePlayer" type="Node"]
+script = ExtResource("1_mpvmp")

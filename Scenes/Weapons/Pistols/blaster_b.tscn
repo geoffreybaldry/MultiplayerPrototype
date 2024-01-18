@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwymik1dhgucr"]
+
+[ext_resource type="PackedScene" uid="uid://00x2msgpuske" path="res://Scenes/Weapons/Rifles/rifle.tscn" id="1_t3lcc"]
+[ext_resource type="PackedScene" uid="uid://kggax4ajv5o6" path="res://Assets/Models/Weapons/blasterB.fbx" id="2_iqojp"]
+[ext_resource type="PackedScene" uid="uid://dpuqcc65ssv4b" path="res://Scenes/Weapons/Projectiles/Bullets/foam_bullet.tscn" id="2_jvqyd"]
+[ext_resource type="Script" path="res://Scenes/Weapons/Pistols/blaster_b.gd" id="2_y44ce"]
+
+[node name="BlasterB" instance=ExtResource("1_t3lcc")]
+script = ExtResource("2_y44ce")
+projectile_scene = ExtResource("2_jvqyd")
+projectile_velocity = 10.0
+
+[node name="Model" parent="." index="0"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="blasterB" parent="Model" index="0" instance=ExtResource("2_iqojp")]

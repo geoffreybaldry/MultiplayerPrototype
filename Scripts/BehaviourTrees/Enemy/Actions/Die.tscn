@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ufaae75g546f"]
+
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/Die.gd" id="1_qvwf3"]
+
+[node name="Die" type="Node"]
+script = ExtResource("1_qvwf3")

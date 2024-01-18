@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://csoo61kaqi1sp"]
+
+[sub_resource type="Curve" id="Curve_xgayg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.433735), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7d7ru"]
+curve = SubResource("Curve_xgayg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_42dik"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+damping_min = 7.0
+damping_max = 10.0
+scale_curve = SubResource("CurveTexture_7d7ru")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_asuqp"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_iwv8c"]
+material = SubResource("StandardMaterial3D_asuqp")
+size = Vector2(0.1, 0.1)
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+emitting = false
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.95
+randomness = 0.1
+process_material = SubResource("ParticleProcessMaterial_42dik")
+draw_pass_1 = SubResource("QuadMesh_iwv8c")

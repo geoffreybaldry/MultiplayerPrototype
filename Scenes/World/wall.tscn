@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://c80mobn6kvsmp"]
+
+[ext_resource type="Texture2D" uid="uid://bdw2j5kejiegc" path="res://Assets/Textures/Grids/Dark/texture_01.png" id="1_b0ui3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jl50a"]
+albedo_texture = ExtResource("1_b0ui3")
+uv1_triplanar = true
+
+[node name="Wall" type="Node3D"]
+
+[node name="Ground" type="CSGBox3D" parent="." groups=["Ground"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -0.5, 2)
+material_override = SubResource("StandardMaterial3D_jl50a")
+use_collision = true
+collision_layer = 2
+size = Vector3(4, 1, 4)
+
+[node name="Wall1" type="CSGBox3D" parent="." groups=["Wall"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.5, 0.5)
+use_collision = true
+collision_layer = 4
+size = Vector3(4, 3, 1)

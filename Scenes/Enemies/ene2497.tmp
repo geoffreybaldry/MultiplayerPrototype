@@ -1,0 +1,108 @@
+[gd_scene load_steps=12 format=3 uid="uid://c8sydgqm2ae4h"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/enemy_bi_ped.gd" id="1_jlir7"]
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/ChasePlayer.gd" id="9_bqjor"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="11_hcs7v"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="12_3adr7"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="12_w32ay"]
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerInAttackRange.gd" id="14_3pvak"]
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerVisible.gd" id="14_g6gu3"]
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Conditions/IsPlayerInChaseRange.gd" id="14_qk4jg"]
+[ext_resource type="Script" path="res://Scripts/BehaviourTrees/Enemy/Actions/AttackPlayer.gd" id="15_kawb6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l2oc"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tmdwt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="Enemy_BiPed" type="CharacterBody3D" groups=["Enemy"]]
+collision_layer = 32
+collision_mask = 39
+script = ExtResource("1_jlir7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2l2oc")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_tmdwt")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="StateLabel" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.66332, 0)
+billboard = 1
+text = "State"
+
+[node name="ClosestPlayerInSightLabel" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40429, 0)
+billboard = 1
+text = "Closest Player"
+
+[node name="Hitbox" type="Area3D" parent="Visual" groups=["Enemy"]]
+collision_layer = 128
+collision_mask = 256
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visual/Hitbox"]
+
+[node name="SoundEffects" type="Node" parent="."]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="BehaviourTrees" type="Node" parent="."]
+
+[node name="BeehaveTree" type="Node" parent="BehaviourTrees" node_paths=PackedStringArray("blackboard")]
+script = ExtResource("11_hcs7v")
+blackboard = NodePath("@Node@18508")
+
+[node name="Either" type="Node" parent="BehaviourTrees/BeehaveTree"]
+script = ExtResource("12_3adr7")
+
+[node name="Attack" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("12_w32ay")
+
+[node name="IsPlayerInAttackRange" type="Node" parent="BehaviourTrees/BeehaveTree/Either/Attack"]
+script = ExtResource("14_3pvak")
+
+[node name="AttackPlayer" type="Node" parent="BehaviourTrees/BeehaveTree/Either/Attack"]
+script = ExtResource("15_kawb6")
+
+[node name="Chase" type="Node" parent="BehaviourTrees/BeehaveTree/Either"]
+script = ExtResource("12_w32ay")
+
+[node name="IsPlayerInChaseRange" type="Node" parent="BehaviourTrees/BeehaveTree/Either/Chase"]
+script = ExtResource("14_qk4jg")
+
+[node name="IsPlayerVisible" type="Node" parent="BehaviourTrees/BeehaveTree/Either/Chase"]
+script = ExtResource("14_g6gu3")
+
+[node name="ChasePlayer" type="Node" parent="BehaviourTrees/BeehaveTree/Either/Chase"]
+script = ExtResource("9_bqjor")
+
+[node name="Detector" type="Node3D" parent="."]
+
+[node name="PlayerDetector" type="Area3D" parent="Detector"]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/PlayerDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0, 3)
+collision_mask = 5
+
+[node name="Marker3D" type="Marker3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = 0.5
+
+[node name="Hurtbox" type="Area3D" parent="." groups=["Enemy"]]
+collision_layer = 64
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]

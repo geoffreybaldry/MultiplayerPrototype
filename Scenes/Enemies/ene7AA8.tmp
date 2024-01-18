@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8sydgqm2ae4h"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/enemy_bi_ped.gd" id="1_jlir7"]
+[ext_resource type="Script" path="res://Scripts/StateMachines/state_machine.gd" id="2_inmwv"]
+[ext_resource type="Script" path="res://Scenes/Enemies/idle_enemy_action_state.gd" id="3_yd33y"]
+[ext_resource type="Script" path="res://Scenes/Enemies/attack_enemy_action_state.gd" id="4_d3st4"]
+[ext_resource type="Script" path="res://Scenes/Enemies/chase_enemy_action_state.gd" id="4_i1kfk"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l2oc"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tmdwt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="Enemy_BiPed" type="CharacterBody3D"]
+collision_layer = 32
+collision_mask = 39
+script = ExtResource("1_jlir7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2l2oc")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_tmdwt")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="State" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40429, 0)
+billboard = 1
+text = "Hello"
+
+[node name="ClosestPlayerInSight" type="Label3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40429, 0)
+billboard = 1
+text = "Hello"
+
+[node name="SoundEffects" type="Node" parent="."]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="StateMachines" type="Node" parent="."]
+
+[node name="EnemyActionStateMachine" type="Node" parent="StateMachines" node_paths=PackedStringArray("current_state")]
+script = ExtResource("2_inmwv")
+current_state = NodePath("IdleEnemyActionState")
+
+[node name="IdleEnemyActionState" type="Node" parent="StateMachines/EnemyActionStateMachine" node_paths=PackedStringArray("actor")]
+script = ExtResource("3_yd33y")
+actor = NodePath("../../..")
+
+[node name="ChaseEnemyActionState" type="Node" parent="StateMachines/EnemyActionStateMachine" node_paths=PackedStringArray("actor")]
+script = ExtResource("4_i1kfk")
+actor = NodePath("../../..")
+
+[node name="AttackEnemyActionState" type="Node" parent="StateMachines/EnemyActionStateMachine" node_paths=PackedStringArray("actor")]
+script = ExtResource("4_d3st4")
+actor = NodePath("../../..")
+
+[node name="Detector" type="Node3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="Detector"]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0, 3)
+collision_mask = 5
+
+[node name="Marker3D" type="Marker3D" parent="Detector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[connection signal="navigation_finished" from="NavigationAgent3D" to="StateMachines/EnemyActionStateMachine/ChaseEnemyActionState" method="_on_navigation_agent_3d_navigation_finished"]
