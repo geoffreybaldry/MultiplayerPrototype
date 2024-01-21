@@ -17,6 +17,18 @@ script = ExtResource("1_t63vk")
 
 [node name="Visual" type="Node3D" parent="."]
 
+[node name="DirectionRay" type="RayCast3D" parent="Visual"]
+target_position = Vector3(0, 0, -7)
+debug_shape_custom_color = Color(0, 0, 1, 1)
+
+[node name="ReflectionRay" type="RayCast3D" parent="Visual"]
+target_position = Vector3(0, 0, 2)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[node name="NormalRay" type="RayCast3D" parent="Visual"]
+target_position = Vector3(0, 0, 2)
+debug_shape_custom_color = Color(0, 1, 0, 1)
+
 [node name="Sounds" type="Node" parent="."]
 
 [node name="Timers" type="Node" parent="."]
