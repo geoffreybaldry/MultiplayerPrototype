@@ -29,8 +29,8 @@ func start_game():
 		# Spawn player at random 
 		var pos := Vector2.from_angle(randf() * 2 * PI)
 		character.position = player_spawn_area.global_position + Vector3(pos.x * SPAWN_RANDOM * randf(), 0, pos.y * SPAWN_RANDOM * randf())
-		$Players.add_child(character, true)
-		
+		$InstantiatedScenes/Players.add_child(character, true)
+
 		# Spawn player at random within player spawner
 		# Create a unit Vector2, rotated a random amount
 #		var pos := Vector2.from_angle(randf() * 2 * PI)

@@ -26,7 +26,7 @@ func fire(player_id):
 	projectile.player_id = player_id
 	projectile.global_transform = muzzle_positon.global_transform
 	projectile.damage = damage
-	get_tree().current_scene.get_node("Projectiles").add_child(projectile, true)
+	get_tree().current_scene.get_node("InstantiatedScenes/Projectiles").add_child(projectile, true)
 
 	# Set the projectile's speed to that of the weapon's projectile_speed
 	# This way different weapons can give a different speed to similar projectiles
