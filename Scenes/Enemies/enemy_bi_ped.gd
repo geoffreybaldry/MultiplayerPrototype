@@ -49,7 +49,7 @@ var dying:bool = false
 
 func _ready():
 	#set_physics_process(multiplayer.is_server())
-	set_process(multiplayer.is_server())
+	#set_process(multiplayer.is_server())
 	
 	# Disable the behaviour tree on clients - we only want it active on the server
 	#beehave_tree.enabled = false
@@ -63,8 +63,8 @@ func _ready():
 	health_bar_3d.init_health(max_health)
 	health = max_health
 
-func _process(delta):
-	pass
+#func _process(delta):
+#	pass
 
 func _physics_process(_delta):
 	# The multiplayer server performs all calculations
@@ -166,6 +166,9 @@ func die():
 
 # This function is called from the Attack animation at the point where the enemy's attack would contact the player
 func perform_attack():
+	if not multiplayer.is_server():
+		return
+		
 	# Check that the player we are attacking is still within attack range
 	var overlapping_areas = hitbox.get_overlapping_areas()
 	for area in overlapping_areas:

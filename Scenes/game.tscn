@@ -46,10 +46,6 @@ spawn_limit = 4
 _spawnable_scenes = PackedStringArray("res://Scenes/Weapons/Projectiles/Bullets/foam_bullet.tscn")
 spawn_path = NodePath("../InstantiatedScenes/Projectiles")
 
-[node name="EffectSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Scenes/Weapons/Effects/sparks_3d.tscn")
-spawn_path = NodePath("../InstantiatedScenes/Effects")
-
 [node name="InstantiatedScenes" type="Node3D" parent="."]
 
 [node name="Players" type="Node3D" parent="InstantiatedScenes"]

@@ -80,7 +80,6 @@ func _ready():
 	pickup_weapon(WEAPON_NAMES.BLASTER_E)
 
 func _process(delta):
-	#player_info.text = str(animation_locomotion_blend_position) + " " + str(target_animation_locomotion_blend_position)
 	player_info.text = str(facing)
 	
 	# Handle if the primary weapon fired

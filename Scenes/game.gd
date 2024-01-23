@@ -4,8 +4,6 @@ const SPAWN_RANDOM := 5.0
 
 @onready var player_spawn_area = $NavigationRegion3D/PlayerSpawnArea
 
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
