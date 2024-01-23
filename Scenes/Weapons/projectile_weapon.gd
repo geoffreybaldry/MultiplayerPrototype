@@ -22,6 +22,7 @@ func fire(player_id):
 	if cooldown_timer.time_left != 0:
 		return
 	
+	print("Instantiating projectile on peer " + str(multiplayer.get_unique_id()))
 	var projectile = projectile_scene.instantiate()
 	projectile.player_id = player_id
 	projectile.global_transform = muzzle_positon.global_transform

@@ -112,7 +112,7 @@ stream = ExtResource("5_v1qle")
 
 [node name="BeehaveTree" parent="BehaviourTrees" index="0" node_paths=PackedStringArray("blackboard")]
 actor_node_path = NodePath("../..")
-blackboard = NodePath("@Node@133645")
+blackboard = NodePath("@Node@225411")
 
 [node name="CollisionShape3D" parent="Detector/PlayerDetector" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
