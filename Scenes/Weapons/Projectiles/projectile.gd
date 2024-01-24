@@ -7,16 +7,16 @@ const NORMAL_RAY_LENGTH = 5.0
 @export var projectile_velocity : float
 @export var player_id : int
 @export var damage : int
+@export var hit_enemy_sound:AudioStreamPlayer
 
-@onready var collision_shape = $CollisionShape3D
+@onready var projectile_collision_shape = $ProjectileCollisionShape3D
+@onready var hitbox_collision_shape = $Hitbox/HitboxCollisionShape3D
 @onready var time_to_live_timer = $Timers/TimeToLiveTimer
 @onready var effect_wait_timer = $Timers/EffectWaitTimer
 
 @onready var direction_ray = $Visual/DirectionRay
 @onready var reflection_ray = $Visual/ReflectionRay
 @onready var normal_ray = $Visual/NormalRay
-
-var direction:Vector3
 
 # Used to set the projectile to "inactive" while final animations, sounds, etc play out, before queue_free()
 var hit = false : set = _on_hit
@@ -25,7 +25,8 @@ func _ready():
 	# Only allow the server to control projectiles
 	if not multiplayer.is_server():
 		set_physics_process(false)
-		collision_shape.disabled = true
+		projectile_collision_shape.disabled = true
+		hitbox_collision_shape.disabled = true
 	else:
 		time_to_live_timer.timeout.connect(_on_time_to_live_timer_timeout)
 		time_to_live_timer.start()
@@ -45,7 +46,7 @@ func _physics_process(delta):
 	if collision:
 		print(collision.get_collider().name)
 		if collision.get_collider().is_in_group("Player"):
-			hit = true
+			pass
 		else:
 			collide_with_body(collision)
 		
@@ -101,22 +102,25 @@ func destroy():
 func _on_hitbox_area_entered(area):
 	if not multiplayer.is_server():
 		return
-		
+
 	print("(projectile.gd) Projectile hitbox entered area " + area.name)
 	if area.get_parent().has_method("hit"):
 		# Call hit with the damage that the projecile deals, and include the projectile's rotation
 		# so that it can be used to set correct transform on particle effects on the incident body (blood spatter, etc). 
-		area.get_parent().hit(damage, global_rotation)
-	
+		#area.get_parent().hit(damage, global_rotation)
+		area.get_parent().hit(damage, velocity)
+
 	hit = true
+	hit_enemy_sound.play()
 	destroy()
 	
 func _on_hit(value):
 	hit = value
-	collision_shape.set_deferred("disabled", true)
+	projectile_collision_shape.set_deferred("disabled", true)
+	hitbox_collision_shape.set_deferred("disabled", true)
 	_hide.rpc()
 
 @rpc("call_local", "reliable")
 func _hide():
 	hide()
-	
+

@@ -15,8 +15,14 @@ use_collision = true
 collision_layer = 2
 size = Vector3(4, 1, 4)
 
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Ground"]
+size = Vector3(4, 1, 4)
+
 [node name="Wall1" type="CSGBox3D" parent="." groups=["Wall"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.5, 0.5)
 use_collision = true
 collision_layer = 4
+size = Vector3(4, 3, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Wall1"]
 size = Vector3(4, 3, 1)

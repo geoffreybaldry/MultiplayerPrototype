@@ -18,7 +18,7 @@ sky_material = SubResource("ProceduralSkyMaterial_onvl3")
 [sub_resource type="Environment" id="Environment_r0xno"]
 background_mode = 1
 sky = SubResource("Sky_063m1")
-ambient_light_source = 2
+ambient_light_source = 1
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.42
 tonemap_mode = 2
@@ -76,15 +76,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -20)
 [node name="Lights" type="Node3D" parent="."]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, 15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3, 5)
 light_energy = 2.0
 shadow_enabled = true
 distance_fade_enabled = true
 omni_range = 20.0
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, -15)
-light_color = Color(0.913725, 0, 0, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3, -16)
+light_color = Color(1, 0.494118, 0.427451, 1)
 light_energy = 5.0
 shadow_enabled = true
 distance_fade_enabled = true
@@ -96,8 +96,8 @@ omni_range = 20.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 10)
 size = Vector3(23, 1, 23)
 
-[node name="Zombie" parent="." instance=ExtResource("5_8j3ta")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
-
 [node name="SlidingDoor" parent="." instance=ExtResource("7_1mjdy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+
+[node name="Zombie" parent="." instance=ExtResource("5_8j3ta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 3)

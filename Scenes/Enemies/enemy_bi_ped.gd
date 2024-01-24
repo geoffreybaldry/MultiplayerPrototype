@@ -18,6 +18,14 @@ var AnimationNames = {
 	AnimationState.DYING:"Library_Zombie/Zombie_Death_Backward",
 }
 
+var AnimationSpeedScales = {
+	AnimationState.IDLE:1.0,
+	AnimationState.RUN:1.0,
+	AnimationState.ATTACK:2.0,
+	AnimationState.END_CHASE:1.0,
+	AnimationState.DYING:1.0,
+}
+
 const SIGHT_RAY_LENGTH = 5.0
 const RUN_SPEED = 3.0
 const ANGULAR_ACCELERATION = 10.0
@@ -35,6 +43,7 @@ const ANGULAR_ACCELERATION = 10.0
 @onready var player_detector = $Detector/PlayerDetector
 @onready var navigation_agent_3d = $NavigationAgent3D
 @onready var beehave_tree = $BehaviourTrees/BeehaveTree
+@onready var hurtbox_collision_shape = $Hurtbox/HurtboxCollisionShape3D
 
 var state = AnimationState.IDLE: set = _set_state
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -45,7 +54,7 @@ var target_position: Vector3: set = _set_target_position
 var last_known_position: Vector3
 var has_last_known_position:bool = false
 var health:float : set = _set_health
-var dying:bool = false
+var dying:bool = false : set = _set_dying
 
 func _ready():
 	#set_physics_process(multiplayer.is_server())
@@ -88,11 +97,12 @@ func _physics_process(_delta):
 			_:
 				pass
 
+		# Clamp calculated velocity to ensure knock backs, etc don't accumulate
+		velocity = velocity.clamp(-Vector3.ONE * RUN_SPEED, Vector3.ONE * RUN_SPEED)
 		move_and_slide()
 	
 	play_animation()
 	
-
 func apply_gravity(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -150,7 +160,6 @@ func attack():
 	# If so, the enemy will inflict damage on the player
 	state = AnimationState.ATTACK
 	
-	
 func idle():
 	state = AnimationState.IDLE
 	
@@ -162,7 +171,6 @@ func end_chase():
 	
 func die():
 	state = AnimationState.DYING
-	# Turn off collisions with all but the ground
 
 # This function is called from the Attack animation at the point where the enemy's attack would contact the player
 func perform_attack():
@@ -205,16 +213,20 @@ func move_on_path():
 	var new_velocity = (next_position - global_position).normalized() * RUN_SPEED
 	velocity = velocity.move_toward(new_velocity, 0.2)
 
+# Face the direction of travel, or the player if chasing
 func face_direction(_delta):
-	visual.rotation.y = lerp_angle(visual.rotation.y, atan2(velocity.x, velocity.z), ANGULAR_ACCELERATION * _delta)
+	if closest_player_in_sight:
+		var player_vec = global_position.direction_to(closest_player_in_sight.global_position)
+		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(player_vec.x, player_vec.z), ANGULAR_ACCELERATION * _delta)
+	else:
+		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(velocity.x, velocity.z), ANGULAR_ACCELERATION * _delta)
 
 func play_animation():
+	animation_player.speed_scale = AnimationSpeedScales[state]
 	animation_player.play(AnimationNames[state])
 
-#@rpc("call_local")
-#func hit(damage:int, _projectile_transform:Transform3D):
-#	print("(enemy_bi_ped.gd) Enemy was hit with damage of " + str(damage))
-#	health -= damage
+func hit(damage:int, _projectile_velocity:Vector3):
+	print("(enemy_bi_ped.gd) Enemy was hit with damage of " + str(damage))
 	
 func is_dying():
 	return dying
@@ -227,6 +239,10 @@ func _set_health(new_health):
 		print("(enemy_bi_ped.gd) _set_health dying = true")
 		dying = true
 
+func _set_dying(value):
+	dying = value
+	hurtbox_collision_shape.set_deferred("disabled", true)
+	
 func _on_navigation_agent_3d_target_reached():
 	emit_signal("target_reached")
 

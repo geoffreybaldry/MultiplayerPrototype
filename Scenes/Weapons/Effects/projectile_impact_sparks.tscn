@@ -30,10 +30,9 @@ billboard_keep_scale = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_iwv8c"]
 material = SubResource("StandardMaterial3D_asuqp")
-size = Vector2(0.1, 0.1)
+size = Vector2(0.05, 0.05)
 
 [node name="GPUParticles3D" type="GPUParticles3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 emitting = false
 lifetime = 2.0
 one_shot = true

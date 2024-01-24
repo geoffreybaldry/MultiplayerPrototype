@@ -38,7 +38,7 @@ collision_layer = 32
 collision_mask = 39
 script = ExtResource("1_jlir7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="EnemyCollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_2l2oc")
 
@@ -74,7 +74,7 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.08704, 0)
 
 [node name="BeehaveTree" type="Node" parent="BehaviourTrees" node_paths=PackedStringArray("blackboard")]
 script = ExtResource("11_hcs7v")
-blackboard = NodePath("@Node@39554")
+blackboard = NodePath("@Node@298119")
 
 [node name="Either" type="Node" parent="BehaviourTrees/BeehaveTree"]
 script = ExtResource("3_vnc7h")
@@ -138,6 +138,6 @@ debug_use_custom = true
 collision_layer = 64
 collision_mask = 1024
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+[node name="HurtboxCollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
 
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

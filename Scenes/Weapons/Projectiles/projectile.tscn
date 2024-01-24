@@ -10,10 +10,10 @@ properties/0/watch = false
 
 [node name="Projectile" type="CharacterBody3D"]
 collision_layer = 8
-collision_mask = 69
+collision_mask = 4
 script = ExtResource("1_t63vk")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="ProjectileCollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="Visual" type="Node3D" parent="."]
 
@@ -29,7 +29,7 @@ debug_shape_custom_color = Color(1, 0, 0, 1)
 target_position = Vector3(0, 0, 2)
 debug_shape_custom_color = Color(0, 1, 0, 1)
 
-[node name="Sounds" type="Node" parent="."]
+[node name="SoundEffects" type="Node" parent="."]
 
 [node name="Timers" type="Node" parent="."]
 
@@ -48,7 +48,7 @@ replication_config = SubResource("SceneReplicationConfig_nnu2q")
 collision_layer = 1024
 collision_mask = 64
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+[node name="HitboxCollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

@@ -24,3 +24,4 @@ wait_time = 0.2
 
 [node name="AudioStreamPlayer" parent="SoundEffects" index="0"]
 stream = ExtResource("5_1arsl")
+volume_db = -10.0

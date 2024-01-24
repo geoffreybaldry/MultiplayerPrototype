@@ -1,26 +1,31 @@
-[gd_scene load_steps=6 format=3 uid="uid://dpuqcc65ssv4b"]
+[gd_scene load_steps=7 format=3 uid="uid://dpuqcc65ssv4b"]
 
 [ext_resource type="PackedScene" uid="uid://uo6oe6uihchd" path="res://Scenes/Weapons/Projectiles/projectile.tscn" id="1_df887"]
 [ext_resource type="Script" path="res://Scenes/Weapons/Projectiles/Bullets/foam_bullet.gd" id="2_rx5em"]
+[ext_resource type="AudioStream" uid="uid://dgi5xqekoiogv" path="res://Assets/Sounds/Effects/Weapons/Damage/Punches-A3-www.fesliyanstudios.com.mp3" id="4_ec42g"]
 [ext_resource type="PackedScene" uid="uid://bgita55katax" path="res://Scenes/Weapons/Projectiles/Bullets/bullet_visual.tscn" id="4_kst8k"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_1fi3l"]
-height = 0.5
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y1mun"]
+height = 0.3
 radius = 0.05
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_7nhrt"]
-height = 0.5
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6or42"]
+height = 0.3
 radius = 0.05
 
-[node name="FoamBullet" instance=ExtResource("1_df887")]
+[node name="FoamBullet" node_paths=PackedStringArray("hit_enemy_sound") instance=ExtResource("1_df887")]
 script = ExtResource("2_rx5em")
+hit_enemy_sound = NodePath("SoundEffects/HitEnemySound")
 
-[node name="CollisionShape3D" parent="." index="0"]
+[node name="ProjectileCollisionShape3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-shape = SubResource("CylinderShape3D_1fi3l")
+shape = SubResource("CylinderShape3D_y1mun")
 
 [node name="Bullet_Visual" parent="Visual" index="0" instance=ExtResource("4_kst8k")]
 
-[node name="CollisionShape3D" parent="Hitbox" index="0"]
+[node name="HitEnemySound" type="AudioStreamPlayer" parent="SoundEffects" index="0"]
+stream = ExtResource("4_ec42g")
+
+[node name="HitboxCollisionShape3D" parent="Hitbox" index="0"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-shape = SubResource("CylinderShape3D_7nhrt")
+shape = SubResource("CylinderShape3D_6or42")
