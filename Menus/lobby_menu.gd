@@ -5,6 +5,7 @@ extends Control
 @onready var start_button = $StartButton
 @onready var disconnect_button = $DisconnectButton
 @onready var name_edit = $NameEdit
+@onready var server_ip_edit = $ServerIPEdit
 
 @onready var player_list = $VBoxContainer/ItemList
 
@@ -35,9 +36,12 @@ func _on_host_button_pressed():
 	host_button.hide()
 	join_button.hide()
 	name_edit.editable = false
+	server_ip_edit.editable = false
 	disconnect_button.show()
 	
 	Lobby.create_game()
+	
+	start_button.grab_focus()
 
 
 func _on_join_button_pressed():
@@ -46,19 +50,18 @@ func _on_join_button_pressed():
 	host_button.hide()
 	join_button.hide()
 	name_edit.editable = false
+	server_ip_edit.editable = false
 	disconnect_button.show()
 	
-	Lobby.join_game()
+	Lobby.join_game(server_ip_edit.text)
 
 
 func _on_start_button_pressed():
 	Lobby.load_game.rpc("res://Scenes/game.tscn")
 	pass # Replace with function body.
 
-
 func _on_name_text_changed(new_text):
 	Lobby.player_info.name = new_text
-
 
 func _on_disconnect_button_pressed():
 	host_button.disabled = false
@@ -66,6 +69,7 @@ func _on_disconnect_button_pressed():
 	host_button.show()
 	join_button.show()
 	name_edit.editable = true
+	server_ip_edit.editable = true
 	disconnect_button.hide()
 	
 	# Clear the player_list
@@ -99,4 +103,7 @@ func _on_player_connected(peer_id, player_info):
 func _on_player_disconnected(peer_id):
 	print("(lobby_menu.gd) Player disconnected with peer_id " + str(peer_id))
 	remove_player_from_list(peer_id)
+
+
+
 

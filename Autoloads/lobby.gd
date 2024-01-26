@@ -42,7 +42,7 @@ func _ready():
 
 
 func join_game(address = ""):
-	print("(lobby.gd) join_game() called")
+	print("(lobby.gd) join_game() called with address : " + address)
 	if address.is_empty():
 		address = DEFAULT_SERVER_IP
 	var peer = ENetMultiplayerPeer.new()
