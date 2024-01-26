@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_ugevu"]
 [ext_resource type="PackedScene" uid="uid://gmmk3uuh8unj" path="res://Scenes/World/room_1.tscn" id="2_fr5ov"]
 [ext_resource type="PackedScene" uid="uid://kq8ktqrfucln" path="res://Scenes/World/corridor_1.tscn" id="3_ie2fy"]
-[ext_resource type="PackedScene" uid="uid://ctrrx6wqvgt56" path="res://Scenes/Enemies/Zombie/zombie.tscn" id="5_8j3ta"]
 [ext_resource type="PackedScene" uid="uid://0s8fsoosi74i" path="res://Scenes/World/door.tscn" id="5_phtyc"]
 [ext_resource type="PackedScene" uid="uid://cev0c5a550hao" path="res://Scenes/World/Misc/player_spawn_area.tscn" id="6_x4as0"]
 [ext_resource type="PackedScene" uid="uid://b4xac5o5wfo4m" path="res://Scenes/World/sliding_door.tscn" id="7_1mjdy"]
+[ext_resource type="PackedScene" uid="uid://nwmkr0owj5w0" path="res://Scenes/World/Spawning/spawn_area.tscn" id="8_xarnh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onvl3"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -46,6 +46,10 @@ spawn_limit = 4
 _spawnable_scenes = PackedStringArray("res://Scenes/Weapons/Projectiles/Bullets/foam_bullet.tscn")
 spawn_path = NodePath("../InstantiatedScenes/Projectiles")
 
+[node name="EnemySpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/Enemies/Zombie/zombie.tscn")
+spawn_path = NodePath("../InstantiatedScenes/Enemies")
+
 [node name="InstantiatedScenes" type="Node3D" parent="."]
 
 [node name="Players" type="Node3D" parent="InstantiatedScenes"]
@@ -53,6 +57,8 @@ spawn_path = NodePath("../InstantiatedScenes/Projectiles")
 [node name="Projectiles" type="Node3D" parent="InstantiatedScenes"]
 
 [node name="Effects" type="Node3D" parent="InstantiatedScenes"]
+
+[node name="Enemies" type="Node3D" parent="InstantiatedScenes"]
 
 [node name="Navigation" type="Node3D" parent="."]
 
@@ -99,5 +105,5 @@ size = Vector3(23, 1, 23)
 [node name="SlidingDoor" parent="." instance=ExtResource("7_1mjdy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
 
-[node name="Zombie" parent="." instance=ExtResource("5_8j3ta")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 3)
+[node name="SpawnArea" parent="." instance=ExtResource("8_xarnh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 4)

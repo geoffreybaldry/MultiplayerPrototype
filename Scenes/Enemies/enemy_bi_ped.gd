@@ -44,6 +44,7 @@ const ANGULAR_ACCELERATION = 10.0
 @onready var navigation_agent_3d = $NavigationAgent3D
 @onready var beehave_tree = $BehaviourTrees/BeehaveTree
 @onready var hurtbox_collision_shape = $Hurtbox/HurtboxCollisionShape3D
+@onready var check_players_in_sight_timer = $Timers/CheckPlayersInSightTimer
 
 var state = AnimationState.IDLE: set = _set_state
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -71,9 +72,7 @@ func _ready():
 	# Vitals
 	health_bar_3d.init_health(max_health)
 	health = max_health
-
-#func _process(delta):
-#	pass
+	
 
 func _physics_process(_delta):
 	# The multiplayer server performs all calculations
@@ -121,10 +120,18 @@ func get_players_in_chase_range():
 	return players_in_chase_range
 	
 func check_players_in_sight():
+	#print("time left : " + str(check_players_in_sight_timer.time_left))
+	if check_players_in_sight_timer.time_left > 0.0:
+		return
+		
+	print("Running")
+	
+	check_players_in_sight_timer.start()
+	
 	if not players_in_chase_range:
 		closest_player_in_sight = null
 		return
-		
+	
 	# If there are some players in chase range, then check which ones we have line of sight to
 	var closest_player_distance = -1
 	closest_player_in_sight = null
@@ -150,6 +157,8 @@ func check_players_in_sight():
 					closest_player_in_sight = player
 					# Point the raycast at the closest player - just a useful debug visualisation
 					ray_cast_3d.set_target_position(ray_cast_3d.to_local(end))
+					
+	
 	
 func get_closest_player_in_sight():
 	return closest_player_in_sight
@@ -236,12 +245,14 @@ func _set_health(new_health):
 	health_bar_3d._set_health(health)
 	
 	if health <= 0:
-		print("(enemy_bi_ped.gd) _set_health dying = true")
 		dying = true
 
 func _set_dying(value):
 	dying = value
 	hurtbox_collision_shape.set_deferred("disabled", true)
+	# Turn off enemy's collision shape layer and player mask so player can pass through
+	set_collision_layer_value(6, false)
+	set_collision_mask_value(1, false)
 	
 func _on_navigation_agent_3d_target_reached():
 	emit_signal("target_reached")
@@ -249,9 +260,11 @@ func _on_navigation_agent_3d_target_reached():
 func delete_enemy():
 	if not multiplayer.is_server():
 		return
-		
-	free_enemy.rpc()
-
-@rpc("call_local")
-func free_enemy():
+	# Remove the object after 'x' seconds
+	await get_tree().create_timer(3.0).timeout
+	#free_enemy.rpc()
 	queue_free()
+	
+#@rpc("call_local")
+#func free_enemy():
+#queue_free()

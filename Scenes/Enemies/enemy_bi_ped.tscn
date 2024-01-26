@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8sydgqm2ae4h"]
+[gd_scene load_steps=18 format=3 uid="uid://c8sydgqm2ae4h"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/enemy_bi_ped.gd" id="1_jlir7"]
 [ext_resource type="PackedScene" uid="uid://dvnecoowv8i4k" path="res://Scenes/WorldUI/HealthBar/health_bar_3d.tscn" id="3_4ftuv"]
@@ -17,8 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://w72ssoqvef61" path="res://Scripts/BehaviourTrees/Enemy/Actions/Idle.tscn" id="12_dopdx"]
 [ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_star.gd" id="12_w32ay"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2l2oc"]
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tmdwt"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = false
@@ -26,12 +24,16 @@ properties/0/sync = true
 properties/0/watch = false
 properties/1/path = NodePath(".:state")
 properties/1/spawn = false
-properties/1/sync = true
-properties/1/watch = false
+properties/1/sync = false
+properties/1/watch = true
 properties/2/path = NodePath("Visual:transform")
 properties/2/spawn = false
 properties/2/sync = true
 properties/2/watch = false
+properties/3/path = NodePath(".:health")
+properties/3/spawn = false
+properties/3/sync = false
+properties/3/watch = true
 
 [node name="Enemy_BiPed" type="CharacterBody3D" groups=["Enemy"]]
 collision_layer = 32
@@ -40,7 +42,6 @@ script = ExtResource("1_jlir7")
 
 [node name="EnemyCollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_2l2oc")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_tmdwt")
@@ -70,11 +71,15 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.08704, 0)
 
 [node name="Timers" type="Node" parent="."]
 
+[node name="CheckPlayersInSightTimer" type="Timer" parent="Timers"]
+wait_time = 3.0
+one_shot = true
+
 [node name="BehaviourTrees" type="Node" parent="."]
 
 [node name="BeehaveTree" type="Node" parent="BehaviourTrees" node_paths=PackedStringArray("blackboard")]
 script = ExtResource("11_hcs7v")
-blackboard = NodePath("@Node@298119")
+blackboard = NodePath("@Node@60070")
 
 [node name="Either" type="Node" parent="BehaviourTrees/BeehaveTree"]
 script = ExtResource("3_vnc7h")

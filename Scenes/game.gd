@@ -14,6 +14,10 @@ func _process(delta):
 	pass
 	
 
+func _input(event):
+	if event.is_action_pressed("spawn_enemy"):
+		Events.emit_signal("spawn")
+
 # Called only on the server.
 func start_game():
 	# All peers are ready to receive RPCs in this scene.
