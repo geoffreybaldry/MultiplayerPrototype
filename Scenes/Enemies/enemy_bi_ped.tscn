@@ -71,15 +71,11 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.08704, 0)
 
 [node name="Timers" type="Node" parent="."]
 
-[node name="CheckPlayersInSightTimer" type="Timer" parent="Timers"]
-wait_time = 3.0
-one_shot = true
-
 [node name="BehaviourTrees" type="Node" parent="."]
 
 [node name="BeehaveTree" type="Node" parent="BehaviourTrees" node_paths=PackedStringArray("blackboard")]
 script = ExtResource("11_hcs7v")
-blackboard = NodePath("@Node@60070")
+blackboard = NodePath("@Node@60536")
 
 [node name="Either" type="Node" parent="BehaviourTrees/BeehaveTree"]
 script = ExtResource("3_vnc7h")

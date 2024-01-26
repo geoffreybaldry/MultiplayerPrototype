@@ -44,7 +44,6 @@ const ANGULAR_ACCELERATION = 10.0
 @onready var navigation_agent_3d = $NavigationAgent3D
 @onready var beehave_tree = $BehaviourTrees/BeehaveTree
 @onready var hurtbox_collision_shape = $Hurtbox/HurtboxCollisionShape3D
-@onready var check_players_in_sight_timer = $Timers/CheckPlayersInSightTimer
 
 var state = AnimationState.IDLE: set = _set_state
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -120,14 +119,6 @@ func get_players_in_chase_range():
 	return players_in_chase_range
 	
 func check_players_in_sight():
-	#print("time left : " + str(check_players_in_sight_timer.time_left))
-	if check_players_in_sight_timer.time_left > 0.0:
-		return
-		
-	print("Running")
-	
-	check_players_in_sight_timer.start()
-	
 	if not players_in_chase_range:
 		closest_player_in_sight = null
 		return
