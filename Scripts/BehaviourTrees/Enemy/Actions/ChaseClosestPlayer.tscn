@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://fq2jm42ww4bp"]
+
+[ext_resource type="Script" path="res://addons/beehave/nodes/leaves/action.gd" id="1_mllre"]
+
+[node name="ChaseClosestPlayer" type="Node"]
+script = ExtResource("1_mllre")

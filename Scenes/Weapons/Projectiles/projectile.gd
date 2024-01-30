@@ -107,7 +107,6 @@ func _on_hitbox_area_entered(area):
 	if area.get_parent().has_method("hit"):
 		# Call hit with the damage that the projecile deals, and include the projectile's rotation
 		# so that it can be used to set correct transform on particle effects on the incident body (blood spatter, etc). 
-		#area.get_parent().hit(damage, global_rotation)
 		area.get_parent().hit(damage, velocity)
 
 	hit = true

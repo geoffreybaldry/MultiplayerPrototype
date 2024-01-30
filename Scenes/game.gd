@@ -15,7 +15,7 @@ func _process(delta):
 	
 
 func _input(event):
-	if event.is_action_pressed("spawn_enemy"):
+	if event.is_action_pressed("spawn_enemy") and multiplayer.is_server():
 		Events.emit_signal("spawn")
 
 # Called only on the server.

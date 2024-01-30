@@ -34,6 +34,10 @@ func fire(player_id):
 	projectile.projectile_velocity = projectile_velocity
 	
 	# Play the firing sound
-	audio_stream_player.play()
-	
+	play_firing_sound.rpc()
+
 	cooldown_timer.start() 
+	
+@rpc("call_local")
+func play_firing_sound():
+	audio_stream_player.play()

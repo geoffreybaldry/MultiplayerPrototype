@@ -20,7 +20,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 6.83148e-08, 0.0453939, -0.78143)
 
 [node name="CooldownTimer" parent="." index="1"]
-wait_time = 0.2
+wait_time = 0.1
 
 [node name="AudioStreamPlayer" parent="SoundEffects" index="0"]
 stream = ExtResource("5_1arsl")
